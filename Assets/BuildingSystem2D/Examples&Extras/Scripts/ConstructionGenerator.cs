@@ -3,20 +3,29 @@ using BuildingSystem2D.Core;
 using BuildingSystem2D.Core.Algorithms;
 using BuildingSystem2D.Core.Restrictions.AttachRestrictions;
 using BuildingSystem2D.Core.Restrictions.RemoveRestrictions;
+using BuildingSystem2D.Elements;
+using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BuildingSystem2D.Examples_Extras.Scripts
 {
     public class ConstructionGenerator : MonoBehaviour
     {
         [SerializeField] private Vector2 coordinatesScale; //Multiplier for blocks coordinates.
-        [SerializeField] private GameObject blockPrefab;
+        [SerializeField] private GameObject defaultBlockPrefab;
         [SerializeField] private Transform pivot;
+        [SerializeField] private ElementsDatabase database;
+        [SerializeField] private RectTransform elementSelectionButtons;
+        [SerializeField] private Button buttonPrefab;
 
         private readonly List<GameObject> _blocks = new();
         private Camera _camera;
         private Construction _construction;
         private Builder _builder;
+
+        private Element _selectedElement;
 
         private void Awake()
         {
@@ -46,27 +55,57 @@ namespace BuildingSystem2D.Examples_Extras.Scripts
                 }
             };
         }
+        
+        private void Start()
+        {
+            UpdateConstruction();
+            GenerateUI();
+        }
+
+        private void GenerateUI()
+        {
+            foreach (var id in database.GetElementsIds())
+            {
+                var button = Instantiate(buttonPrefab, elementSelectionButtons);
+                var textMeshPro = button.GetComponentInChildren<TextMeshProUGUI>();
+                textMeshPro.text = id;
+                button.onClick.AddListener(() => OnElementSelected(id));
+            }
+        }
+
+        private void OnElementSelected(string id)
+        {
+            _selectedElement = database.GetElement(id);
+        }
 
         private void OnDestroy()
         {
             ConstructionIO.Save(_construction);
         }
 
-        private void Start()
-        {
-            UpdateView();
-        }
+
 
         private void Update()
         {
             if (Input.GetMouseButtonDown(0))
             {
                 var pos = ToConstructionCoordinates(Input.mousePosition);
-                var posInt = new Vector2(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
-                var block = new Block { Position = posInt };
+                var blockPos = new Vector2(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y));
+                var block = new Block { Position = blockPos};
+                if (_selectedElement is not null)
+                {
+                    block.Contents = new List<Content>
+                    {
+                        new Content
+                        {
+                            PrefabId = _selectedElement.PrefabId,
+                            Data = _selectedElement.GetState()
+                        }
+                    };
+                }
                 if (_builder.TryAttach(block))
                 {
-                    UpdateView();
+                    UpdateConstruction();
                 }
             }
 
@@ -78,7 +117,7 @@ namespace BuildingSystem2D.Examples_Extras.Scripts
                 {
                     if (_builder.TryRemove(block))
                     {
-                        UpdateView();
+                        UpdateConstruction();
                     }
                 }
             }
@@ -93,7 +132,7 @@ namespace BuildingSystem2D.Examples_Extras.Scripts
             return unscaledCoordinates;
         }
 
-        private void UpdateView()
+        private void UpdateConstruction()
         {
             foreach (var block in _blocks)
             {
@@ -104,10 +143,24 @@ namespace BuildingSystem2D.Examples_Extras.Scripts
             foreach (var block in _construction.Blocks)
             {
                 var localPos = new Vector2(block.Position.x * coordinatesScale.x, block.Position.y * coordinatesScale.y);
-                var go = Instantiate(blockPrefab, Vector2.zero, Quaternion.identity);
-                go.transform.SetParent(pivot, worldPositionStays: false);
-                go.transform.localPosition = localPos;
-                _blocks.Add(go);
+                var blockRoot = Instantiate(defaultBlockPrefab, Vector2.zero, Quaternion.identity);
+                blockRoot.transform.SetParent(pivot, worldPositionStays: false);
+                blockRoot.transform.localPosition = localPos;
+                foreach (var content in block.Contents)
+                {
+                    var prefab = database.GetElement(content.PrefabId);
+                    var state = content.Data;
+                    var element = Instantiate(prefab, Vector2.zero, quaternion.identity);
+                    element.SetState(state);
+                    element.StateUpdated += (s) =>
+                    {
+                        content.Data = s;
+                    };
+                    var elementTransform = element.transform;
+                    elementTransform.SetParent(blockRoot.transform, worldPositionStays: false);
+                    elementTransform.localPosition = Vector3.zero;
+                }
+                _blocks.Add(blockRoot);
             }
         }
     }

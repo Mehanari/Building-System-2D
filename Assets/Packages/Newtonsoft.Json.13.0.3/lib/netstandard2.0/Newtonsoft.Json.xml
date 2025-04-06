@@ -1252,9 +1252,9 @@
         </member>
         <member name="M:Newtonsoft.Json.JsonArrayAttribute.#ctor(System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Newtonsoft.Json.JsonArrayAttribute"/> class with the specified container Id.
+            Initializes a new instance of the <see cref="T:Newtonsoft.Json.JsonArrayAttribute"/> class with the specified container PrefabId.
             </summary>
-            <param name="id">The container Id.</param>
+            <param name="id">The container PrefabId.</param>
         </member>
         <member name="T:Newtonsoft.Json.JsonConstructorAttribute">
             <summary>
@@ -1266,7 +1266,7 @@
             Instructs the <see cref="T:Newtonsoft.Json.JsonSerializer"/> how to serialize the object.
             </summary>
         </member>
-        <member name="P:Newtonsoft.Json.JsonContainerAttribute.Id">
+        <member name="P:Newtonsoft.Json.JsonContainerAttribute.PrefabId">
             <summary>
             Gets or sets the id.
             </summary>
@@ -1357,9 +1357,9 @@
         </member>
         <member name="M:Newtonsoft.Json.JsonContainerAttribute.#ctor(System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Newtonsoft.Json.JsonContainerAttribute"/> class with the specified container Id.
+            Initializes a new instance of the <see cref="T:Newtonsoft.Json.JsonContainerAttribute"/> class with the specified container PrefabId.
             </summary>
-            <param name="id">The container Id.</param>
+            <param name="id">The container PrefabId.</param>
         </member>
         <member name="T:Newtonsoft.Json.JsonConvert">
             <summary>
@@ -2093,9 +2093,9 @@
         </member>
         <member name="M:Newtonsoft.Json.JsonDictionaryAttribute.#ctor(System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Newtonsoft.Json.JsonDictionaryAttribute"/> class with the specified container Id.
+            Initializes a new instance of the <see cref="T:Newtonsoft.Json.JsonDictionaryAttribute"/> class with the specified container PrefabId.
             </summary>
-            <param name="id">The container Id.</param>
+            <param name="id">The container PrefabId.</param>
         </member>
         <member name="T:Newtonsoft.Json.JsonException">
             <summary>
@@ -2221,9 +2221,9 @@
         </member>
         <member name="M:Newtonsoft.Json.JsonObjectAttribute.#ctor(System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Newtonsoft.Json.JsonObjectAttribute"/> class with the specified container Id.
+            Initializes a new instance of the <see cref="T:Newtonsoft.Json.JsonObjectAttribute"/> class with the specified container PrefabId.
             </summary>
-            <param name="id">The container Id.</param>
+            <param name="id">The container PrefabId.</param>
         </member>
         <member name="T:Newtonsoft.Json.JsonPropertyAttribute">
             <summary>
@@ -9094,7 +9094,7 @@
             </note>
             </summary>
         </member>
-        <member name="P:Newtonsoft.Json.Schema.JsonSchema.Id">
+        <member name="P:Newtonsoft.Json.Schema.JsonSchema.PrefabId">
             <summary>
             Gets or sets the id.
             </summary>
@@ -9542,7 +9542,7 @@
         <member name="T:Newtonsoft.Json.Schema.UndefinedSchemaIdHandling">
             <summary>
             <para>
-            Specifies undefined schema Id handling options for the <see cref="T:Newtonsoft.Json.Schema.JsonSchemaGenerator"/>.
+            Specifies undefined schema PrefabId handling options for the <see cref="T:Newtonsoft.Json.Schema.JsonSchemaGenerator"/>.
             </para>
             <note type="caution">
             JSON Schema validation has been moved to its own package. See <see href="https://www.newtonsoft.com/jsonschema">https://www.newtonsoft.com/jsonschema</see> for more details.
@@ -9551,17 +9551,17 @@
         </member>
         <member name="F:Newtonsoft.Json.Schema.UndefinedSchemaIdHandling.None">
             <summary>
-            Do not infer a schema Id.
+            Do not infer a schema PrefabId.
             </summary>
         </member>
         <member name="F:Newtonsoft.Json.Schema.UndefinedSchemaIdHandling.UseTypeName">
             <summary>
-            Use the .NET type name as the schema Id.
+            Use the .NET type name as the schema PrefabId.
             </summary>
         </member>
         <member name="F:Newtonsoft.Json.Schema.UndefinedSchemaIdHandling.UseAssemblyQualifiedName">
             <summary>
-            Use the assembly qualified .NET type name as the schema Id.
+            Use the assembly qualified .NET type name as the schema PrefabId.
             </summary>
         </member>
         <member name="T:Newtonsoft.Json.Schema.ValidationEventArgs">

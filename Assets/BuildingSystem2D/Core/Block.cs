@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -13,5 +14,7 @@ namespace BuildingSystem2D.Core
     {
         [JsonProperty("position")]
         public Vector2 Position { get; set; }
+        [JsonProperty("contents")]
+        public List<Content> Contents { get; set; } = new();
     }
 }
